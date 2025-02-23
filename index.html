@@ -1,0 +1,504 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thread Co.</title>
+    <style>
+        /* CSS Reset (Optional, but good practice) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+            line-height: 1.6;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: #121212;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #333;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            color: #E0E0E0;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #333;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #222;
+            color: #E0E0E0;
+            width: 200px; /* Adjust as needed */
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 10px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        /* Hamburger Menu (for mobile) */
+        .hamburger {
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: #1a1a1a; /* Slightly lighter than body */
+            padding: 4rem 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px; /* Adjust as needed */
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+        }
+
+        .cta-button {
+            background-color: #1ABC9C;
+            color: #fff;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none; /* Important for accessibility */
+            display: inline-block; /* For proper padding/margin */
+        }
+
+        .cta-button:hover {
+            background-color: #16a085;
+        }
+
+        /* Product Grid */
+        .products-section {
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            /* justify-content: space-between;  Important for consistent height */
+        }
+
+        .product-image {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            aspect-ratio: 1 / 1; /* Maintain aspect ratio */
+            object-fit: cover;  /* Ensure image covers the area */
+        }
+
+        .product-details {
+            flex-grow: 1; /* Allow details to take up remaining space */
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .product-description {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #ccc;
+            flex-grow: 1;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Color Swatches */
+        .color-swatches {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-swatch {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid #555;
+            cursor: pointer;
+        }
+
+        /* Thickness Selector */
+        .thickness-selector {
+            margin-bottom: 1rem;
+        }
+
+        .thickness-selector select {
+            padding: 0.5rem;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #222;
+            color: #E0E0E0;
+            width: 100%; /* Full width */
+        }
+
+        .add-to-cart {
+            background-color: #E91E63;
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%; /* Full width */
+            margin-top: auto; /* Push to bottom */
+        }
+
+        .add-to-cart:hover {
+            background-color: #c2185b;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Hide by default on mobile */
+                flex-direction: column;
+                position: absolute;
+                top: 60px; /* Adjust based on header height */
+                left: 0;
+                width: 100%;
+                background-color: #121212;
+                z-index: 99;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex; /* Show hamburger menu */
+            }
+
+            .search-input {
+                width: 150px; /* Smaller search input */
+            }
+
+            .hero {
+                padding: 2rem 1rem; /* Less padding */
+                min-height: auto; /* Allow hero to shrink */
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Accessibility Enhancements */
+        /* Ensure sufficient contrast - already handled by color choices */
+
+        /* Keyboard Navigation */
+        a, button, input, select {
+            outline: none; /* Remove default outline */
+            transition: box-shadow 0.2s ease; /* Smooth focus effect */
+        }
+
+        a:focus, button:focus, input:focus, select:focus {
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3); /* Focus ring */
+        }
+
+        /* ARIA Attributes (Example - add more as needed) */
+        [role="button"] {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">Thread Co.</a>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#" role="button" aria-label="Shopping Cart">Cart</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Search..." aria-label="Search">
+                <span class="search-icon">&#128269;</span>
+            </div>
+            <div class="hamburger">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Welcome to Thread Co.</h1>
+        <p>Discover the finest selection of threads for all your crafting needs.</p>
+        <a href="#products" class="cta-button">Shop Now</a>
+    </section>
+
+    <section class="products-section" id="products">
+        <h2>Our Products</h2>
+        <div class="product-grid">
+            <!-- Product Card 1 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300" alt="Product 1" class="product-image" >
+                <div class="product-details">
+                    <h3 class="product-name">Premium Cotton Thread</h3>
+                    <p class="product-description">High-quality cotton thread, perfect for quilting and sewing.</p>
+                    <p class="product-price">$5.99</p>
+                    <div class="color-swatches">
+                        <div class="color-swatch" style="background-color: #f00;" data-color="#f00" aria-label="Red"></div>
+                        <div class="color-swatch" style="background-color: #0f0;" data-color="#0f0" aria-label="Green"></div>
+                        <div class="color-swatch" style="background-color: #00f;" data-color="#00f" aria-label="Blue"></div>
+                    </div>
+                    <div class="thickness-selector">
+                        <label for="thickness1" class="sr-only">Thickness:</label>
+                        <select id="thickness1" name="thickness1">
+                            <option value="thin">Thin</option>
+                            <option value="medium">Medium</option>
+                            <option value="thick">Thick</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+
+            <!-- Product Card 2 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300" alt="Product 2" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-name">Silk Thread</h3>
+                    <p class="product-description">Luxurious silk thread for delicate fabrics and embroidery.</p>
+                    <p class="product-price">$8.99</p>
+                    <div class="color-swatches">
+                        <div class="color-swatch" style="background-color: #ff0;" data-color="#ff0" aria-label="Yellow"></div>
+                        <div class="color-swatch" style="background-color: #0ff;" data-color="#0ff" aria-label="Cyan"></div>
+                        <div class="color-swatch" style="background-color: #f0f;" data-color="#f0f" aria-label="Magenta"></div>
+                    </div>
+                    <div class="thickness-selector">
+                        <label for="thickness2" class="sr-only">Thickness:</label>
+                        <select id="thickness2" name="thickness2">
+                            <option value="thin">Thin</option>
+                            <option value="medium">Medium</option>
+                            <option value="thick">Thick</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+
+             <!-- Product Card 3 -->
+             <div class="product-card">
+                <img src="https://via.placeholder.com/300" alt="Product 3" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-name">Polyester Thread</h3>
+                    <p class="product-description">Durable and versatile, ideal for a wide range of projects.</p>
+                    <p class="product-price">$4.49</p>
+                    <div class="color-swatches">
+                        <div class="color-swatch" style="background-color: #800080;" data-color="#800080" aria-label="Purple"></div>
+                        <div class="color-swatch" style="background-color: #ffa500;" data-color="#ffa500" aria-label="Orange"></div>
+                        <div class="color-swatch" style="background-color: #008000;" data-color="#008000" aria-label="Dark Green"></div>
+                    </div>
+                    <div class="thickness-selector">
+                        <label for="thickness3" class="sr-only">Thickness:</label>
+                        <select id="thickness3" name="thickness3">
+                            <option value="thin">Thin</option>
+                            <option value="medium">Medium</option>
+                            <option value="thick">Thick</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+
+            <!-- Product Card 4 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300" alt="Product 4" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-name">Metallic Thread</h3>
+                    <p class="product-description">Adds a touch of sparkle to your creations, perfect for special occasions.</p>
+                    <p class="product-price">$7.29</p>
+                    <div class="color-swatches">
+                        <div class="color-swatch" style="background-color: #c0c0c0;" data-color="#c0c0c0" aria-label="Silver"></div>
+                        <div class="color-swatch" style="background-color: #ffd700;" data-color="#ffd700" aria-label="Gold"></div>
+                        <div class="color-swatch" style="background-color: #b87333;" data-color="#b87333" aria-label="Bronze"></div>
+                    </div>
+                    <div class="thickness-selector">
+                        <label for="thickness4" class="sr-only">Thickness:</label>
+                        <select id="thickness4" name="thickness4">
+                            <option value="thin">Thin</option>
+                            <option value="medium">Medium</option>
+                            <option value="thick">Thick</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="add-to-cart">Add to Cart</button>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Thread Co. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Hamburger Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Color Swatch Click Handler
+        document.querySelectorAll('.color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', function() {
+                const color = this.dataset.color;
+                // In a real application, you'd update the product image or other details
+                console.log('Selected color:', color);
+            });
+        });
+
+        // Add to Cart (Placeholder - would need backend integration)
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('Product added to cart (Placeholder)');
+            });
+        });
+
+        // Smooth Scrolling (for same-page links)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Screen Reader Only Text (for accessibility)
+        const srOnlyStyle = document.createElement('style');
+        srOnlyStyle.innerHTML = `
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+        `;
+        document.head.appendChild(srOnlyStyle);
+
+    </script>
+</body>
+</html>
+```
